@@ -58,13 +58,13 @@ const routes = [
   },
 
   {
-    path:'/editTransaction/:TransactionId',
+    path:'/editTransaction/:transactionId',
     name: 'editTransaction',
    component: () => import( '../views/EditTransaction.vue')
   },
   
   {
-    path:'/infoTransaction/:TransactionId',
+    path:'/infoTransaction/:transactionId',
     name: 'infoTransaction',
     component: () => import( '../views/ViewTransaction.vue')
   

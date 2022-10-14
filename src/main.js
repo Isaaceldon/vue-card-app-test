@@ -3,6 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+//import JQuery from 'jquery'
+global.jQuery = require('jquery');
+var $ = global.jQuery;
+window.$ = $;
+//window.$ = JQuery
+import 'jquery/dist/jquery.min.js';
 
 import  'bootstrap';
 // ***********************************************************************

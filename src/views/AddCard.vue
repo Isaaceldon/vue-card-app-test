@@ -4,7 +4,7 @@
       <div class="col-md-10" style="margin: 0px auto">
         <ErrorComponent :errors="errors"></ErrorComponent>
 
-        <form class="new-form container card col-md-8 col-sm-11">
+        <form class="new-form container card col-md-8 col-sm-11"  method="POST"  @submit="addCard">
           <h3 class="new-form-h3">Creating of new card</h3>
           <div class="row">
             <div class="form-group my-2 col-md-12 col-sm-12">
@@ -65,10 +65,67 @@
 
 <script>
 import ErrorComponent from "../views/Errors.vue";
+import {getAPI} from "../axios-api.js";
 export default {
   name: "AddCardComponent",
   components: {
     ErrorComponent,
+  },
+
+  data() {
+    return {
+      errors: [],
+      type: null,
+      number: null,
+      expiration_date: null,
+    };
+  },
+
+  methods: {
+    addCard(e) {
+      this.errors = [];
+      if (
+        this.type &&
+        this.number &&
+        this.expiration_date 
+      ) {
+        getAPI
+            .post("/debit-cards", {
+              type: this.type,
+              number: this.number,
+              expiration_date: this.expiration_date,
+            })
+            .then((response) => {
+            //   console.log(response);
+              if (response.data.success == 1 && response.status == 200) {
+                setInterval(() => {
+                  document.location.href = "/listCard";
+                  this.$swal(
+                    "Creating",
+                    "Debit card created with success!",
+                    "success"
+                  );
+                }, 1000);
+                this.$router.go(0);
+              } else {
+                this.errors.push("Creating card failed!");
+              }
+            });
+        }
+
+      if (!this.type) {
+        this.errors.push("type is required");
+      }
+    
+      if (!this.number) {
+        this.errors.push("number is required");
+      }
+
+      if (!this.expiration_date) {
+        this.errors.push("expiration_date is required");
+      }
+      e.preventDefault();
+    },
   },
 };
 </script>

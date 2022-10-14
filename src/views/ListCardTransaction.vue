@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="item in allTransactions" :key="item.id">
             <th scope="row">1</th>
 
             <td>Otto</td>
@@ -32,55 +32,30 @@
             <td>Otto</td>
             <td>@mdo</td>
             <td>
-              <router-link to="/infoTransaction/1" class="btn mx-1 btn-info"
-                >View</router-link
+              <router-link 
+              :to="{
+                name: 'infoTransaction',
+                params:{transactionId:item.id},
+              }"
+              
+               class="btn mx-1 btn-info"
+                >
+                View</router-link
               >
-              <router-link to="/editTransaction/1" class="btn mx-1 btn-primary"
+              <router-link   :to="{
+                name: 'editTransaction',
+                params:{transactionId:item.id},
+              }" class="btn mx-1 btn-primary"
                 >Edit</router-link
               >
-              <button class="btn mx-1 btn-danger" @click="showAlert(1)">
-                Delete
-              </button>
+              <button
+                class="btn mx-1 btn-danger"
+                @click="showAlert(item.id)"
+              >
+                Delete</button>
             </td>
           </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>
-              <router-link to="/infoTransaction/1" class="btn mx-1 btn-info"
-                >View</router-link
-              >
-              <router-link to="/editTransaction/1" class="btn mx-1 btn-primary"
-                >Edit</router-link
-              >
-              <button class="btn mx-1 btn-danger" @click="showAlert(2)">
-                Delete
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry the Bird</td>
-
-            <td>Larry the Bird</td>
-            <td>@twitter</td>
-            <td>@twitter</td>
-            <td>
-              <router-link to="/infoTransaction/1" class="btn mx-1 btn-info"
-                >View</router-link
-              >
-              <router-link to="/editTransaction/1" class="btn mx-1 btn-primary"
-                >Edit</router-link
-              >
-              <button class="btn mx-1 btn-danger" @click="showAlert(3)">
-                Delete
-              </button>
-            </td>
-          </tr>
+     
         </tbody>
       </table>
     </div>
@@ -88,11 +63,14 @@
 </template>
 
 <script>
+import { getAPI } from "../axios-api.js";
 export default {
   name: "ListTransactionComponent",
   data() {
     return {
       Errors: [],
+      allTransactions:[],
+      
     };
   },
   methods: {
@@ -119,6 +97,16 @@ export default {
         }
       });
     },
+  },
+
+  created() {
+    this.allTransactions = [];
+    getAPI
+      .get("/debit-card-transactions")
+      .then((response) => {
+        this.allTransactions = response.data.data;
+        // console.log(this.allCards);
+      });
   },
 };
 </script>

@@ -21,63 +21,36 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="card in allCards" :key="card.id">
             <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <td>{{card.type}}</td>
+            <td>{{card.number}}</td>
+            <td>{{card.expiration_date}}</td>
             <td>
-              <router-link to="/infoCard/1" class="btn mx-1 btn-info"
-                >View</router-link
+              <router-link 
+              :to="{
+                name: 'infoCard',
+                params:{cardId:card.id},
+              }"
+              
+               class="btn mx-1 btn-info"
+                >
+                View</router-link
               >
-              <router-link to="/editCard/1" class="btn mx-1 btn-primary"
+              <router-link   :to="{
+                name: 'editCard',
+                params:{cardId:card.id},
+              }" class="btn mx-1 btn-primary"
                 >Edit</router-link
               >
               <button
                 class="btn mx-1 btn-danger"
-                @click="showAlert(1)"
+                @click="showAlert(card.id)"
               >
                 Delete</button>
             </td>
           </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>
-              <router-link to="/infoCard/1" class="btn mx-1 btn-info"
-                >View</router-link
-              >
-              <router-link to="/editCard/1" class="btn mx-1 btn-primary"
-                >Edit</router-link
-              >
-              <button
-                class="btn mx-1 btn-danger"
-                @click="showAlert(2)"
-              >
-                Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry the Bird</td>
-            <td>@twitter</td>
-            <td>@twitter</td>
-            <td>
-              <router-link to="/infoCard/1" class="btn mx-1 btn-info"
-                >View</router-link
-              >
-              <router-link to="/editCard/1" class="btn mx-1 btn-primary"
-                >Edit</router-link
-              >
-              <button
-                class="btn mx-1 btn-danger"
-                @click="showAlert(3)"
-              >
-                Delete</button>
-            </td>
-          </tr>
+         
         </tbody>
       </table>
     </div>
@@ -85,11 +58,13 @@
 </template>
 
 <script>
+import { getAPI } from "../axios-api.js";
 export default {
   name: "ListDebitCardComponent",
   data() {
     return {
      Errors:[],
+     allCards:[],
     };
   },
 
@@ -117,6 +92,17 @@ export default {
         }
       });
     },
+  },
+
+
+  created() {
+    this.allCards = [];
+    getAPI
+      .get("/debit-cards")
+      .then((response) => {
+        this.allCards = response.data.data;
+        // console.log(this.allCards);
+      });
   },
 };
 </script>
