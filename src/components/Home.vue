@@ -4,7 +4,7 @@
     <h1>Welcome !!!</h1>
     <h3>Do you want to create your own debit card ? click the button below</h3>
 
-    <router-link to="/newCard" class="btn btn-success">Create new card</router-link>
+    <router-link to="/login" class="btn btn-success">Create new card</router-link>
   </div>
  </div>
 </template>

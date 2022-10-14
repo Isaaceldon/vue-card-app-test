@@ -6,7 +6,7 @@
       <router-link to="/listTransaction">All transactions</router-link>
     </div>
     <div class="header-right">
-      <router-link to="/logout">Logout</router-link>
+      <!-- <router-link to="/logout">Logout</router-link> -->
       <router-link to="/register">Register</router-link>
       <router-link to="/login">Login</router-link>
     </div>

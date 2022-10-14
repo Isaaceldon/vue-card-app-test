@@ -48,7 +48,7 @@ export default {
           .then((response) => {
             localStorage.setItem("userToken", response.data.access);
             // this.$router.push("/home");
-            document.location.href = "/home";
+            document.location.href = "/listCard";
           })
           .catch(() => this.loginFailed());
       }
