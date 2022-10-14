@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
@@ -8,16 +7,82 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: ()=>import("../components/Home.vue")
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path: '/register',
+    name: 'register',
+    component: ()=>import("../components/Register.vue")
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: ()=>import("../components/Login.vue")
+  },
+
+
+  /**DEBIT CARD ROUTES */
+  {
+    path: '/listCard',
+    name: 'listDebitCard',
+    
+    component: () => import( '../views/ListDebitCard.vue')
+  },
+
+  {
+    path:'/editCard/:cardId',
+    name: 'editCard',
+   component: () => import( '../views/EditCard.vue')
+  },
+  
+  {
+    path:'/infoCard/:cardId',
+    name: 'infoCard',
+    component: () => import( '../views/ViewCard.vue')
+  
+  },
+  {
+    path:'/newCard',
+    name: 'newCard',
+    component: () => import( '../views/AddCard.vue')
+
+  },
+
+/*** TRANSACTION ROUTES */
+
+  {
+    path: '/listTransaction',
+    name: 'listTransaction',
+    
+    component: () => import( '../views/ListCardTransaction.vue')
+  },
+
+  {
+    path:'/editTransaction/:TransactionId',
+    name: 'editTransaction',
+   component: () => import( '../views/EditTransaction.vue')
+  },
+  
+  {
+    path:'/infoTransaction/:TransactionId',
+    name: 'infoTransaction',
+    component: () => import( '../views/ViewTransaction.vue')
+  
+  },
+  {
+    path:'/newTransaction',
+    name: 'newTransaction',
+    component: () => import( '../views/AddTransaction.vue')
+
+  },
+
+  /*** NOT FOUND ROUTE */
+  {
+    path: '*',
+    name: 'notFound',
+    
+    component: () => import( '../views/NotFound.vue')
+  },
 ]
 
 const router = new VueRouter({
