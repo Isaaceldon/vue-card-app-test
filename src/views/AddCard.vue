@@ -96,8 +96,8 @@ export default {
               expiration_date: this.expiration_date,
             })
             .then((response) => {
-            //   console.log(response);
-              if (response.data.success == 1 && response.status == 200) {
+             console.log(response);
+              if (response.status === 201) {
                 setInterval(() => {
                   document.location.href = "/listCard";
                   this.$swal(
@@ -106,7 +106,6 @@ export default {
                     "success"
                   );
                 }, 1000);
-                this.$router.go(0);
               } else {
                 this.errors.push("Creating card failed!");
               }

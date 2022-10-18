@@ -38,7 +38,7 @@ const routes = [
   {
     path:'/infoCard/:cardId',
     name: 'infoCard',
-    component: () => import( '../views/ViewCard.vue')
+    component: () => import( '../views/AllCardView.vue')
   
   },
   {
@@ -50,25 +50,26 @@ const routes = [
 
 /*** TRANSACTION ROUTES */
 
-  {
-    path: '/listTransaction',
-    name: 'listTransaction',
+  // {
+  //   path: '/listTransaction',
+  //   name: 'listTransaction',
     
-    component: () => import( '../views/ListCardTransaction.vue')
-  },
+  //   component: () => import( '../views/ListCardTransaction.vue')
+  // },
 
-  {
-    path:'/editTransaction/:transactionId',
-    name: 'editTransaction',
-   component: () => import( '../views/EditTransaction.vue')
-  },
+  // {
+  //   path:'/editTransaction/:transactionId',
+  //   name: 'editTransaction',
+  //  component: () => import( '../views/EditTransaction.vue')
+  // },
   
-  {
-    path:'/infoTransaction/:transactionId',
-    name: 'infoTransaction',
-    component: () => import( '../views/ViewTransaction.vue')
+  // {
+  //   path:'/infoTransaction',
+  //   name: 'infoTransaction',
+  //   component: () => import( '../views/ViewTransaction.vue')
   
-  },
+  // },
+
   {
     path:'/newTransaction',
     name: 'newTransaction',

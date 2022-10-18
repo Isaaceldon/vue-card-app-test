@@ -1,7 +1,7 @@
 <template>
   <div class="debit-card">
     <div class="container">
-      <div class="row">
+      <div class="row my-5">
         <div class="col-md-6">
           <h3>List of debit card</h3>
         </div>
@@ -11,6 +11,36 @@
           >
         </div>
       </div>
+
+      <form
+        class="new-form container card  col-sm-12"
+        @submit="viewTransaction"
+      >
+        <h3 class="new-form-h3">Transactions of debit card</h3>
+        <div class="row justify-content-center align-items-center">
+          <div class="form-group col-md-6 col-sm-12">
+            <label class="control-label" for="debit_card">Choose Card</label>
+            <select
+              class="form-select"
+              name="debit_card_id"
+              v-model="debit_card_id"
+              id="debit_card"
+              aria-label="Default select example"
+            >
+              <option v-for="card in allCards" :value="card.id" :key="card.id">
+                {{ card.type }} {{ card.number }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-6 col-sm-12 p-0">
+            <input
+              class="form-control btn-primary btn "
+              type="submit"
+              value="View transactions"
+            />
+          </div>
+        </div>
+      </form>
 
       <table class="table container mt-5">
         <thead class="table-success">
@@ -24,38 +54,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in allTransactions" :key="item.id">
+          <tr v-for="(item, index) in allTransactions" :key="item.id">
             <th scope="row">1</th>
 
-            <td>Otto</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.type }}</td>
+            <td>{{ item.number }}</td>
+            <td>{{ item.amount }}</td>
+            <td>{{ item.currency_code }}</td>
             <td>
-              <router-link 
-              :to="{
-                name: 'infoTransaction',
-                params:{transactionId:item.id},
-              }"
+              <button class="btn mx-1 btn-info">View</button>
               
-               class="btn mx-1 btn-info"
-                >
-                View</router-link
-              >
-              <router-link   :to="{
-                name: 'editTransaction',
-                params:{transactionId:item.id},
-              }" class="btn mx-1 btn-primary"
-                >Edit</router-link
-              >
-              <button
-                class="btn mx-1 btn-danger"
-                @click="showAlert(item.id)"
-              >
-                Delete</button>
+              <button class="btn mx-1 btn-danger" @click="showAlert(item.id)">
+                Delete
+              </button>
             </td>
           </tr>
-     
         </tbody>
       </table>
     </div>
@@ -70,10 +84,24 @@ export default {
     return {
       Errors: [],
       allTransactions:[],
-      
+      debit_card_id:null,
+      allCards:[]
+
     };
   },
   methods: {
+
+
+    viewTransaction(){
+      this.allTransactions = [];
+      getAPI
+      .get(`/debit-card-transactions/${this.debit_card_id}`)
+      .then((response) => {
+        this.allTransactions = response.data;
+      });
+      this.$router.go(0)
+    },
+
     showAlert(id) {
       this.$swal({
         title: "Are you sure to delete this Transaction ?",
@@ -100,15 +128,15 @@ export default {
   },
 
   created() {
-    this.allTransactions = [];
-    getAPI
-      .get("/debit-card-transactions")
-      .then((response) => {
-        this.allTransactions = response.data.data;
-        // console.log(this.allCards);
-      });
-  },
-};
+      this.allCards = [];
+      getAPI.get("/debit-cards").then((response) => {
+      // console.log(response)
+      this.allCards = response.data;
+  });
+
+
+}
+}
 </script>
 
 <style scoped>

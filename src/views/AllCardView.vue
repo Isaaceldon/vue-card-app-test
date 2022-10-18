@@ -21,7 +21,7 @@
       <table class="table container mt-5">
         <thead class="table-success">
           <tr>
-            <th scope="col">#</th>
+            <!-- <th scope="col">#</th> -->
             <th scope="col">Card Type</th>
             <th scope="col">Card Number</th>
             <th scope="col">Amount</th>
@@ -30,20 +30,24 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in allTransactions" :key="item.id">
-            <td>{{ index + 1 }}</td>
+          <tr >
+            <!-- <td>{{ index + 1 }}</td> -->
             <td>{{ currentCard.type }}</td>
             <td>{{ currentCard.number }}</td>
-            <td>{{ item.amount }}</td>
-            <td>{{ item.currency_code }}</td>
+            <td>{{ allTransactions.amount }}</td>
+            <td>{{ allTransactions.currency_code }}</td>
             <td>
               <b-button
-                v-b-modal="'modal-1'+item.id"
+                v-b-modal="'modal-1' + allTransactions.id"
                 class="btn mx-1 btn-info"
                 >View</b-button
               >
-              <b-modal hide-footer :id="'modal-1'+ item.id" title="Informations about the card">
-               <ViewTransaction :card="currentCard" :transaction="item"/>
+              <b-modal
+                hide-footer
+                :id="'modal-1' + allTransactions.id"
+                title="Informations about the card"
+              >
+                <ViewTransaction :card="currentCard" :transaction="item" />
               </b-modal>
 
               <button class="btn mx-1 btn-danger" @click="showAlert(item.id)">
@@ -60,16 +64,16 @@
 <script>
 import { getAPI } from "../axios-api";
 import ViewTransaction from "./ViewTransaction.vue";
+
 export default {
-  name: "ViewCard",
+  name: "AllCardView",
   data() {
     return {
-      currentCard: null,
       allTransactions: [],
-    }
+      currentCard: null,
+    };
   },
-
-    components: { ViewTransaction },
+  components: { ViewTransaction },
   methods: {
     showAlert(id) {
       this.$swal({
@@ -96,24 +100,24 @@ export default {
     },
   },
   created() {
-    this.allTransactions=[];
-    
+    this.allTransactions = null;
+
     getAPI.get(`/debit-cards/${this.$route.params.cardId}`).then((response) => {
       if (response.status === 200) {
         // console.log(response);
         this.currentCard = response.data;
       }
     });
+
     getAPI
       .get(`/debit-card-transactions/${this.$route.params.cardId}`)
       .then((response) => {
-        console.log(response)
+        console.log(response);
         console.log(response.data);
         this.allTransactions = response.data;
-        console.log(this.allTransactions)
+        console.log(this.allTransactions);
       });
   },
-
 };
 </script>
 

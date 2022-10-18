@@ -2,13 +2,14 @@
   <nav class="header d-flex justify-content-arround align-items-center">
     <div class="header-left">
       <router-link to="/">Home</router-link>
-      <router-link to="/listCard">All card</router-link>
-      <router-link to="/listTransaction">All transactions</router-link>
+      <router-link to="/listCard">All card and Transactions</router-link>
     </div>
+      
+      <router-link v-show="!userToken" to="/register">Register</router-link>
+      <router-link v-show="!userToken" to="/login">Login</router-link>
+      
+      <button class="btn btn-danger" v-show="userToken" @click="logout">Logout</button>
     <div class="header-right">
-      <!-- <router-link to="/logout">Logout</router-link> -->
-      <router-link to="/register">Register</router-link>
-      <router-link to="/login">Login</router-link>
     </div>
   </nav>
 </template>
@@ -16,6 +17,22 @@
 <script>
 export default {
   name: "HeaderComponent",
+  data() {
+    return {
+      userToken:null,
+    }
+  },
+
+  created() {
+    this.userToken = localStorage.getItem('userToken');
+  },
+  methods:{
+    logout(){
+      localStorage.clear();
+      // this.$router.push("/login");
+      document.location.href = "/login";
+    }
+  }
 };
 </script>
 
@@ -30,6 +47,7 @@ nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  z-index: 100;
 }
 
 nav a {
