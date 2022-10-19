@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const getAPI = axios.create({
-    baseURL: 'https://phplaravel-859613-2969716.cloudwaysapps.com/api',
+    baseURL: 'http://127.0.0.1:8000/api',
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem("userToken")
