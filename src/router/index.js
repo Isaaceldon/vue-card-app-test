@@ -26,7 +26,18 @@ const routes = [
     path: '/listCard',
     name: 'listDebitCard',
     
-    component: () => import( '../views/ListDebitCard.vue')
+    component: () => import( '../views/ListDebitCard.vue'),
+
+    children:
+      [
+        {
+            path: '/listTransaction',
+            name: 'listTransaction',
+            
+            component: () => import( '../views/ListCardTransaction.vue')
+         
+      }
+    ],
   },
 
   {

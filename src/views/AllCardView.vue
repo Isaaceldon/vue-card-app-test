@@ -16,7 +16,7 @@
       </li>
     </ul>
 
-    <div>
+    <div v-show="allTransactions">
       <h2 class="bg-info p-2 fs-3 my-3">All transaction with the debit card</h2>
       <table class="table container mt-5">
         <thead class="table-success">
@@ -30,7 +30,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr >
+          <tr>
             <!-- <td>{{ index + 1 }}</td> -->
             <td>{{ currentCard.type }}</td>
             <td>{{ currentCard.number }}</td>
@@ -47,12 +47,8 @@
                 :id="'modal-1' + allTransactions.id"
                 title="Informations about the card"
               >
-                <ViewTransaction :card="currentCard" :transaction="item" />
+                <ViewTransaction :card="currentCard" :transaction="allTransactions" />
               </b-modal>
-
-              <button class="btn mx-1 btn-danger" @click="showAlert(item.id)">
-                Delete
-              </button>
             </td>
           </tr>
         </tbody>
@@ -69,38 +65,13 @@ export default {
   name: "AllCardView",
   data() {
     return {
-      allTransactions: [],
+      allTransactions:null,
       currentCard: null,
     };
   },
   components: { ViewTransaction },
-  methods: {
-    showAlert(id) {
-      this.$swal({
-        title: "Are you sure to delete this Transaction ?",
-        text: "You can't revert your action",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes Delete it!",
-        cancelButtonText: "No, Keep it!",
-        showCloseButton: true,
-        showLoaderOnConfirm: true,
-      }).then((result) => {
-        console.log(id);
-        if (result.value) {
-          this.$swal(
-            "Deleted",
-            " You successfully deleted this file ",
-            "success"
-          );
-        } else {
-          this.$swal("Cancelled", "Your file is still intact", "info");
-        }
-      });
-    },
-  },
+  methods: {},
   created() {
-    this.allTransactions = null;
 
     getAPI.get(`/debit-cards/${this.$route.params.cardId}`).then((response) => {
       if (response.status === 200) {
@@ -112,10 +83,10 @@ export default {
     getAPI
       .get(`/debit-card-transactions/${this.$route.params.cardId}`)
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
+        // console.log(response);
+        // console.log(response.data);
         this.allTransactions = response.data;
-        console.log(this.allTransactions);
+        // console.log(this.allTransactions);
       });
   },
 };

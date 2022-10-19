@@ -5,6 +5,7 @@
         <ErrorComponent :errors="errors"></ErrorComponent>
 
         <form
+        method="POST"
           class="new-form container card col-md-8 col-sm-11"
           @submit="updateCard"
         >
@@ -13,23 +14,22 @@
             <div class="form-group my-2 col-md-12 col-sm-12">
               <label class="control-label" for="type">Type Card</label>
               <input
+              disabled
                 class="form-control"
                 type="text"
                 name="type"
                 id="type"
-                v-model="type"
               />
             </div>
             <div class="form-group my-2 col-md-12 col-sm-12">
               <label class="control-label" for="number">Card number</label>
               <input
+              disabled
                 class="form-control"
                 type="number"
                 name="number"
                 id="number"
                 placeholder="Ex:1000 0000 0000 0000"
-                min="0"
-                v-model="number"
               />
             </div>
             <div class="form-group my-2 col-md-12 col-sm-12">
@@ -37,28 +37,38 @@
                 >Expiration Date</label
               >
               <input
+              disabled
                 class="form-control"
-                type="date"
+                type="text"
                 name="expiration_date"
                 id="expiration_date"
-                min="0"
-                v-model="expiration_date"
               />
             </div>
+            <!-- <div class="form-group my-2 col-md-12 col-sm-12">
+              <label class="control-label" for="expiration_date"
+                >Disable Date</label
+              >
+              <input
+                class="form-control"
+                type="date"
+                name="is_active"
+                id="is_active"
+                v-model="is_active"
+              />
+            </div> -->
           </div>
 
           <div class="d-flex my-3">
             <input
               class="form-control btn-primary btn"
               type="submit"
-              value="Edit Card"
+              value="Disable"
             />
 
-            <input
-              type="reset"
+            <button
               class="form-control btn-danger btn"
-              value="Cancel"
-            />
+             @click="goBack"
+            >Cancel</button>
           </div>
         </form>
       </div>
@@ -79,53 +89,41 @@ export default {
   data() {
     return {
       errors: [],
-      type: null,
-      number: null,
-      expiration_date: null,
       currentCard: null,
     };
   },
 
   methods: {
     updateCard(e) {
+      e.preventDefault();
       this.errors = [];
-      if (this.type && this.number && this.expiration_date) {
         getAPI
           .put(`/debit-cards/${this.$route.params.cardId}`, {
-            type: this.type,
-            number: this.number,
-            expiration_date: this.expiration_date,
+            is_active : true 
           })
           .then((response) => {
-            console.log(response);
-            if (response.status === 201) {
+            if (response.status === 200) {
               setInterval(() => {
+                document.location.href = "/listCard";
                 this.$swal(
                   "Editing",
-                  "Debit card edited with success!",
+                  "Debit card disabled with success!",
                   "success"
                 );
               }, 1000);
-              document.location.href = "/listCard";
+             
+              // this.$router.push("/listCard")
             } else {
               this.errors.push("Editing failed!");
             }
           });
-      }
-
-      if (!this.type) {
-        this.errors.push("type is required");
-      }
-
-      if (!this.number) {
-        this.errors.push("number is required");
-      }
-
-      if (!this.expiration_date) {
-        this.errors.push("expiration_date is required");
-      }
-      e.preventDefault();
+    
+      
     },
+
+    goBack(){
+      this.$router.go(-1)
+       }
   },
 
   created() {
